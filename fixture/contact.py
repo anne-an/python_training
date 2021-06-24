@@ -72,7 +72,9 @@ class ContactHelper:
 
     def go_to_home_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not (len(wd.find_elements_by_link_text("Last name")) > 0 and wd.current_url.endswith("index.php")):
+            wd.find_element_by_link_text("home").click()
+            wd.find_element_by_link_text("Last name")
 
     def close_alert_and_get_its_text(self):
         wd = self.app.wd
