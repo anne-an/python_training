@@ -17,6 +17,7 @@ class ContactHelper:
         # submit contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.go_to_home_page()
+        self.contact_cache = None
 
     def modify_first_contact(self, contact):
         wd = self.app.wd
@@ -27,6 +28,7 @@ class ContactHelper:
         wd.find_element_by_xpath("//form[@action='edit.php']").click()
         wd.find_element_by_xpath("//div[@id='content']/form/input[22]").click()
         self.go_to_home_page()
+        self.contact_cache = None
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -69,6 +71,7 @@ class ContactHelper:
         self.accept_next_alert = True
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.close_alert_and_get_its_text()
+        self.contact_cache = None
 
     def go_to_home_page(self):
         wd = self.app.wd
@@ -100,21 +103,24 @@ class ContactHelper:
         if self.count() == 0:
             self.create(Contact(firstname="Name"))
 
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.go_to_home_page()
-        contacts = []
-        for i, element in enumerate(wd.find_elements_by_xpath("//*[@class='sortcompletecallback-applyZebra']/tbody/tr")):
-            if i == 0:
-                continue
-            cells = element.find_elements_by_tag_name("td")
-            ind = element.find_element_by_name("selected[]").get_attribute("value")
-            name = ""
-            lastname = ""
-            for j, cell in enumerate(cells):
-                if j == 1:
-                    lastname = cell.text
-                elif j == 2:
-                    name = cell.text
-            contacts.append(Contact(id=ind, firstname=name, lastname=lastname))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.go_to_home_page()
+            self.contact_cache = []
+            for i, element in enumerate(wd.find_elements_by_xpath("//*[@class='sortcompletecallback-applyZebra']/tbody/tr")):
+                if i == 0:
+                    continue
+                cells = element.find_elements_by_tag_name("td")
+                ind = element.find_element_by_name("selected[]").get_attribute("value")
+                name = ""
+                lastname = ""
+                for j, cell in enumerate(cells):
+                    if j == 1:
+                        lastname = cell.text
+                    elif j == 2:
+                        name = cell.text
+                self.contact_cache.append(Contact(id=ind, firstname=name, lastname=lastname))
+        return list(self.contact_cache)
