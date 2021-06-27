@@ -72,7 +72,8 @@ class ContactHelper:
 
     def go_to_home_page(self):
         wd = self.app.wd
-        if not (len(wd.find_elements_by_link_text("Last name")) > 0 and wd.current_url.endswith("index.php")):
+        wd.find_elements_by_link_text("Last name")
+        if not len(wd.find_elements_by_link_text("Last name")) > 0:
             wd.find_element_by_link_text("home").click()
             wd.find_element_by_link_text("Last name")
 
@@ -98,3 +99,22 @@ class ContactHelper:
         self.go_to_home_page()
         if self.count() == 0:
             self.create(Contact(firstname="Name"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.go_to_home_page()
+        contacts = []
+        for i, element in enumerate(wd.find_elements_by_xpath("//*[@class='sortcompletecallback-applyZebra']/tbody/tr")):
+            if i == 0:
+                continue
+            cells = element.find_elements_by_tag_name("td")
+            ind = element.find_element_by_name("selected[]").get_attribute("value")
+            name = ""
+            lastname = ""
+            for j, cell in enumerate(cells):
+                if j == 1:
+                    lastname = cell.text
+                elif j == 2:
+                    name = cell.text
+            contacts.append(Contact(id=ind, firstname=name, lastname=lastname))
+        return contacts
