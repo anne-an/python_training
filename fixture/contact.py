@@ -20,9 +20,12 @@ class ContactHelper:
         self.contact_cache = None
 
     def modify_first_contact(self, contact):
+        self.modify_contact_by_index(0)
+
+    def modify_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.go_to_home_page()
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
         wd.find_element_by_xpath("//form[@action='edit.php']").click()
         self.fill_contact_form(contact)
         wd.find_element_by_xpath("//form[@action='edit.php']").click()
@@ -65,9 +68,12 @@ class ContactHelper:
         self.change_field_value("ayear", contact.ayear)
 
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.go_to_home_page()
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
         self.accept_next_alert = True
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.close_alert_and_get_its_text()

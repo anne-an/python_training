@@ -2,7 +2,7 @@ from random import randrange
 from model.group import Group
 
 
-def test_modify_first_group(app):
+def test_modify_some_group(app):
     old_groups = app.group.get_group_list()
     index = randrange(len(old_groups))
     app.group.create_if_no_groups()
