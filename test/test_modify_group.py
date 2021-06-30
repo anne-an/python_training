@@ -3,9 +3,9 @@ from model.group import Group
 
 
 def test_modify_some_group(app):
+    app.group.create_if_no_groups()
     old_groups = app.group.get_group_list()
     index = randrange(len(old_groups))
-    app.group.create_if_no_groups()
     group = Group(name="qwerty", header="asdzxc123", footer="")
     group.id = old_groups[index].id
     app.group.modify_group_by_index(index, group)

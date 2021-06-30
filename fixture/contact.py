@@ -20,7 +20,7 @@ class ContactHelper:
         self.contact_cache = None
 
     def modify_first_contact(self, contact):
-        self.modify_contact_by_index(0)
+        self.modify_contact_by_index(0, contact)
 
     def modify_contact_by_index(self, index, contact):
         wd = self.app.wd
@@ -112,21 +112,17 @@ class ContactHelper:
     contact_cache = None
 
     def get_contact_list(self):
+        self.go_to_home_page()
         if self.contact_cache is None:
             wd = self.app.wd
             self.go_to_home_page()
             self.contact_cache = []
-            for i, element in enumerate(wd.find_elements_by_xpath("//*[@class='sortcompletecallback-applyZebra']/tbody/tr")):
-                if i == 0:
-                    continue
-                cells = element.find_elements_by_tag_name("td")
-                ind = element.find_element_by_name("selected[]").get_attribute("value")
-                name = ""
-                lastname = ""
-                for j, cell in enumerate(cells):
-                    if j == 1:
-                        lastname = cell.text
-                    elif j == 2:
-                        name = cell.text
+            table = wd.find_element_by_id("maintable")
+            rows = table.find_elements_by_name("entry")
+            for row in rows:
+                ind = row.find_element_by_name("selected[]").get_attribute("value")
+                cells = row.find_elements_by_tag_name("td")
+                name = cells[2].text
+                lastname = cells[1].text
                 self.contact_cache.append(Contact(id=ind, firstname=name, lastname=lastname))
         return list(self.contact_cache)
