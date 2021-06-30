@@ -1,5 +1,6 @@
 from selenium.webdriver.support.select import Select
 from model.contact import Contact
+from test.test_phones import merge_phones_like_on_home_page
 import re
 
 
@@ -126,8 +127,11 @@ class ContactHelper:
                 cells = row.find_elements_by_tag_name("td")
                 name = cells[2].text
                 lastname = cells[1].text
+                address = cells[3].text
+                all_emails = cells[4].text
                 all_phones = cells[5].text
                 self.contact_cache.append(Contact(id=ind, firstname=name, lastname=lastname,
+                                                  address=address, all_emails_from_home_page = all_emails,
                                                   all_phones_from_home_page=all_phones))
         return list(self.contact_cache)
 
@@ -151,13 +155,21 @@ class ContactHelper:
         first_name = wd.find_element_by_name("firstname").get_attribute("value")
         last_name = wd.find_element_by_name("lastname").get_attribute("value")
         id = wd.find_element_by_name("id").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
         home_phone = wd.find_element_by_name("home").get_attribute("value")
         work_phone = wd.find_element_by_name("work").get_attribute("value")
         mobile_phone = wd.find_element_by_name("mobile").get_attribute("value")
         secondary_phone = wd.find_element_by_name("phone2").get_attribute("value")
-        return Contact(firstname=first_name, lastname=last_name, id=id,
-                       home_phone=home_phone, work_phone=work_phone,
-                       mobile_phone=mobile_phone, secondary_phone=secondary_phone)
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
+        all_emails = "\n".join(filter(lambda x: x != "" and x is not None,
+                                      [email, email2, email3]))
+        all_phones = merge_phones_like_on_home_page(Contact(home_phone=home_phone, work_phone=work_phone,
+                                                            mobile_phone=mobile_phone, secondary_phone=secondary_phone))
+        return Contact(id=id, firstname=first_name, lastname=last_name,
+                       address=address, all_emails_from_home_page=all_emails,
+                       all_phones_from_home_page=all_phones)
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
