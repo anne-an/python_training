@@ -77,6 +77,7 @@ class ContactHelper:
         self.accept_next_alert = True
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.close_alert_and_get_its_text()
+        wd.find_elements_by_class_name("msgbox")
         self.contact_cache = None
 
     def go_to_home_page(self):

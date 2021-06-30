@@ -45,6 +45,7 @@ class GroupHelper:
         self.select_group_by_index(index)
         # submit deletion
         wd.find_element_by_name("delete").click()
+        wd.find_elements_by_class_name("msgbox")
         self.return_to_groups_page()
         self.group_cache = None
 
