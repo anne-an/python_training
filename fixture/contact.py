@@ -85,7 +85,7 @@ class ContactHelper:
     def go_to_home_page(self):
         wd = self.app.wd
         wd.find_elements_by_id("maintable")
-        if not len(wd.find_elements_by_link_text("Last name")) > 0:
+        if not len(wd.find_elements_by_id("maintable")) > 0:
             wd.find_element_by_link_text("home").click()
             wd.find_element_by_id("maintable")
 

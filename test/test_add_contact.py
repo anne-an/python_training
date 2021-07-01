@@ -6,21 +6,18 @@ from model.contact import Contact
 
 
 def random_string(prefix, maxlen):
-    symbols = string.ascii_letters + string.digits + " "*10
+    symbols = string.ascii_letters + string.digits
     return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 
 test_data = [
-    Contact(firstname=name, lastname=lastname, middlename=middlename,
-            address=address, home_phone=home_phone, mobile_phone=mobile_phone,
-            work_phone=work_phone, email=email)
+    Contact(firstname=name, lastname=lastname, middlename="Отчество",
+            address=address, home_phone=home_phone, mobile_phone="89879879877",
+            work_phone="654321", email=email)
     for name in ["", random_string("name", 10)]
     for lastname in ["", random_string("lastname", 20)]
-    for middlename in ["", random_string("middlename", 20)]
     for address in ["", random_string("address", 20)]
     for home_phone in ["", random_string("home_phone", 20)]
-    for mobile_phone in ["", random_string("mobile_phone", 20)]
-    for work_phone in ["", random_string("work_phone", 20)]
     for email in ["", random_string("email", 20)]
 ]
 
