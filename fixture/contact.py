@@ -35,6 +35,21 @@ class ContactHelper:
         self.go_to_home_page()
         self.contact_cache = None
 
+    def modify_contact_by_id(self, id, contact):
+        wd = self.app.wd
+        self.go_to_home_page()
+        self.select_contact_by_id(id)
+        wd.find_element_by_xpath('//a[@href="edit.php?id=%s"]' % id).click()
+        self.fill_contact_form(contact)
+        wd.find_element_by_name("update").click()
+        # wd.find_element_by_xpath("//div[@id='content']/form/input[22]").click()
+        self.go_to_home_page()
+        self.contact_cache = None
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
     def change_field_value(self, field_name, text):
         wd = self.app.wd
         if text:
@@ -82,6 +97,16 @@ class ContactHelper:
         wd.find_elements_by_class_name("msgbox")
         self.contact_cache = None
 
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.go_to_home_page()
+        self.select_contact_by_id(id)
+        self.accept_next_alert = True
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        self.close_alert_and_get_its_text()
+        wd.find_elements_by_class_name("msgbox")
+        self.contact_cache = None
+
     def go_to_home_page(self):
         wd = self.app.wd
         wd.find_elements_by_id("maintable")
@@ -107,9 +132,9 @@ class ContactHelper:
         self.go_to_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    def create_if_no_contacts(self):
+    def create_if_no_contacts(self, db):
         self.go_to_home_page()
-        if self.count() == 0:
+        if len(db.get_contact_list()) == 0:
             self.create(Contact(firstname="Name"))
 
     contact_cache = None

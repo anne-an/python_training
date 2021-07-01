@@ -87,6 +87,19 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cache = None
 
+    def modify_group_by_id(self, id, group):
+        wd = self.app.wd
+        self.open_groups_page()
+        self.select_group_by_id(id)
+        # open modification form
+        wd.find_element_by_name("edit").click()
+        self.fill_group_form(group)
+        # submit modification
+        wd.find_element_by_name("update").click()
+        wd.find_element_by_xpath("//div[@id='content']/div").click()
+        self.return_to_groups_page()
+        self.group_cache = None
+
     def return_to_groups_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("group page").click()
@@ -96,7 +109,7 @@ class GroupHelper:
         self.open_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    def create_if_no_groups(self, db=None):
+    def create_if_no_groups(self, db):
         self.open_groups_page()
         if len(db.get_group_list()) == 0:
             self.create(Group(name="test"))
