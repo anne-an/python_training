@@ -160,6 +160,26 @@ class ContactHelper:
                                                   all_phones_from_home_page=all_phones))
         return list(self.contact_cache)
 
+    def get_contact_by_id(self, id):
+        contact = Contact()
+        wd = self.app.wd
+        self.go_to_home_page()
+        table = wd.find_element_by_id("maintable")
+        rows = table.find_elements_by_name("entry")
+        for row in rows:
+            ind = row.find_element_by_name("selected[]").get_attribute("value")
+            if str(ind) == str(id):
+                cells = row.find_elements_by_tag_name("td")
+                name = cells[2].text
+                lastname = cells[1].text
+                address = cells[3].text
+                all_emails = cells[4].text
+                all_phones = cells[5].text
+                contact = Contact(id=id, firstname=name, lastname=lastname,
+                                                  address=address, all_emails_from_home_page = all_emails,
+                                                  all_phones_from_home_page=all_phones)
+        return contact
+
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
         self.go_to_home_page()
