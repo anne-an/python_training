@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 4.0.3 (Python 3.7.2 on darwin)" generated="20210709 13:26:22.692" rpa="false" schemaversion="2">
+<suite id="s1" name="Group Scenarios" source="/Users/anna/Documents/repos/python_training/rf/group_scenarios.robot">
+<kw name="Init Fixtures" library="AddressBook" type="SETUP">
+<status status="PASS" starttime="20210709 13:26:23.047" endtime="20210709 13:26:34.046"/>
+</kw>
+<test id="s1-t1" name="Add new group">
+<kw name="Get Group List" library="AddressBook">
+<var>${old_list}</var>
+<msg timestamp="20210709 13:26:34.059" level="INFO">${old_list} = [323:name1; header1; footer1, 324:name2; header2; footer2, 325:name1; header1; footer1, 326:name2; header2; footer2, 327:name1; header1; footer1, 328:name2; header2; footer2, 329:name1; header1; foote...</msg>
+<status status="PASS" starttime="20210709 13:26:34.055" endtime="20210709 13:26:34.059"/>
+</kw>
+<kw name="New Group" library="AddressBook">
+<var>${group}</var>
+<arg>name1</arg>
+<arg>header1</arg>
+<arg>footer1</arg>
+<msg timestamp="20210709 13:26:34.060" level="INFO">${group} = None:name1; header1; footer1</msg>
+<status status="PASS" starttime="20210709 13:26:34.059" endtime="20210709 13:26:34.060"/>
+</kw>
+<kw name="Create Group" library="AddressBook">
+<arg>${group}</arg>
+<status status="PASS" starttime="20210709 13:26:34.061" endtime="20210709 13:26:35.284"/>
+</kw>
+<kw name="Get Group List" library="AddressBook">
+<var>${new_list}</var>
+<msg timestamp="20210709 13:26:35.288" level="INFO">${new_list} = [323:name1; header1; footer1, 324:name2; header2; footer2, 325:name1; header1; footer1, 326:name2; header2; footer2, 327:name1; header1; footer1, 328:name2; header2; footer2, 329:name1; header1; foote...</msg>
+<status status="PASS" starttime="20210709 13:26:35.284" endtime="20210709 13:26:35.288"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${old_list}</arg>
+<arg>${group}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20210709 13:26:35.289" endtime="20210709 13:26:35.290"/>
+</kw>
+<kw name="Group Lists Should Be Equal" library="AddressBook">
+<arg>${new_list}</arg>
+<arg>${old_list}</arg>
+<status status="PASS" starttime="20210709 13:26:35.291" endtime="20210709 13:26:35.292"/>
+</kw>
+<status status="PASS" starttime="20210709 13:26:34.051" endtime="20210709 13:26:35.294"/>
+</test>
+<test id="s1-t2" name="Delete group">
+<kw name="Get Group List" library="AddressBook">
+<var>${old_list}</var>
+<msg timestamp="20210709 13:26:35.297" level="INFO">${old_list} = [323:name1; header1; footer1, 324:name2; header2; footer2, 325:name1; header1; footer1, 326:name2; header2; footer2, 327:name1; header1; footer1, 328:name2; header2; footer2, 329:name1; header1; foote...</msg>
+<status status="PASS" starttime="20210709 13:26:35.295" endtime="20210709 13:26:35.297"/>
+</kw>
+<kw name="Get Length" library="BuiltIn">
+<var>${len}</var>
+<arg>${old_list}</arg>
+<doc>Returns and logs the length of the given item as an integer.</doc>
+<msg timestamp="20210709 13:26:35.299" level="INFO">Length is 15</msg>
+<msg timestamp="20210709 13:26:35.299" level="INFO">${len} = 15</msg>
+<status status="PASS" starttime="20210709 13:26:35.298" endtime="20210709 13:26:35.299"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${index}</var>
+<arg>random.randrange(${len})</arg>
+<arg>random</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20210709 13:26:35.301" level="INFO">${index} = 7</msg>
+<status status="PASS" starttime="20210709 13:26:35.300" endtime="20210709 13:26:35.301"/>
+</kw>
+<kw name="Get From List" library="Collections">
+<var>${group}</var>
+<arg>${old_list}</arg>
+<arg>${index}</arg>
+<doc>Returns the value specified with an ``index`` from ``list``.</doc>
+<msg timestamp="20210709 13:26:35.304" level="INFO">${group} = 330:name2; header2; footer2</msg>
+<status status="PASS" starttime="20210709 13:26:35.302" endtime="20210709 13:26:35.304"/>
+</kw>
+<kw name="Delete Group" library="AddressBook">
+<arg>${group}</arg>
+<status status="PASS" starttime="20210709 13:26:35.304" endtime="20210709 13:26:35.729"/>
+</kw>
+<kw name="Get Group List" library="AddressBook">
+<var>${new_list}</var>
+<msg timestamp="20210709 13:26:35.733" level="INFO">${new_list} = [323:name1; header1; footer1, 324:name2; header2; footer2, 325:name1; header1; footer1, 326:name2; header2; footer2, 327:name1; header1; footer1, 328:name2; header2; footer2, 329:name1; header1; foote...</msg>
+<status status="PASS" starttime="20210709 13:26:35.729" endtime="20210709 13:26:35.733"/>
+</kw>
+<kw name="Remove Values From List" library="Collections">
+<arg>${old_list}</arg>
+<arg>${group}</arg>
+<doc>Removes all occurrences of given ``values`` from ``list``.</doc>
+<status status="PASS" starttime="20210709 13:26:35.733" endtime="20210709 13:26:35.735"/>
+</kw>
+<kw name="Group Lists Should Be Equal" library="AddressBook">
+<arg>${new_list}</arg>
+<arg>${old_list}</arg>
+<status status="PASS" starttime="20210709 13:26:35.736" endtime="20210709 13:26:35.737"/>
+</kw>
+<status status="PASS" starttime="20210709 13:26:35.294" endtime="20210709 13:26:35.738"/>
+</test>
+<kw name="Destroy Fixtures" library="AddressBook" type="TEARDOWN">
+<status status="PASS" starttime="20210709 13:26:35.741" endtime="20210709 13:26:35.840"/>
+</kw>
+<status status="PASS" starttime="20210709 13:26:22.699" endtime="20210709 13:26:35.841"/>
+</suite>
+<statistics>
+<total>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="2" fail="0" skip="0" id="s1" name="Group Scenarios">Group Scenarios</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
