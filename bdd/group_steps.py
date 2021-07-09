@@ -18,18 +18,17 @@ def new_group(name, header, footer):
 
 @pytest.fixture
 @when("I add the group to the list")
-def add_new_group(app, new_group):
+def add_new_group(app, new_group, db):
     app.group.create(new_group)
+    return db.get_group_list()
 
 
 @pytest.fixture
 @then("the new group list is equal to the old list with the added group")
-def verify_group_added(db, group_list, new_group):
+def verify_group_added(db, group_list, new_group, add_new_group):
     old_groups = group_list
-    new_groups = db.get_group_list()
+    new_groups = add_new_group
     old_groups.append(new_group)
-    print(old_groups)
-    print(new_groups)
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
 
