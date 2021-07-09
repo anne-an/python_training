@@ -2,6 +2,7 @@ import json
 import os
 from fixture.application import Application
 from fixture.db import DbFixture
+from model.contact import Contact
 from model.group import Group
 
 
@@ -39,5 +40,20 @@ class AddressBook:
     def delete_group(self, group):
         self.fixture.group.delete_group_by_id(group.id)
 
-    def group_lists_should_be_equal(self, list1, list2):
+    def lists_should_be_equal(self, list1, list2):
         assert sorted(list1, key=Group.id_or_max) == sorted(list2, key=Group.id_or_max)
+
+    def get_contact_list(self):
+        return self.db_fixture.get_contact_list()
+
+    def new_contact(self, firstname, middlename, lastname):
+        return Contact(firstname=firstname, middlename=middlename, lastname=lastname)
+
+    def create_contact(self, contact):
+        self.fixture.contact.create(contact)
+
+    def delete_contact(self, contact):
+        self.fixture.contact.delete_contact_by_id(contact.id)
+
+    def modify_contact(self, contact, new_contact):
+        self.fixture.contact.modify_contact_by_id(contact.id, new_contact)

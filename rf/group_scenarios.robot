@@ -12,7 +12,7 @@ Add new group
     Create Group  ${group}
     ${new_list}=  Get Group List
     Append To List  ${old_list}  ${group}
-    Group Lists Should Be Equal  ${new_list}  ${old_list}
+    AddressBook.Lists Should Be Equal  ${new_list}  ${old_list}
 
 Delete group
     ${old_list}=  Get Group List
@@ -22,4 +22,4 @@ Delete group
     Delete Group  ${group}
     ${new_list}=  Get Group List
     Remove Values From List  ${old_list}  ${group}
-    Group Lists Should Be Equal  ${new_list}  ${old_list}
+    AddressBook.Lists Should Be Equal  ${new_list}  ${old_list}
